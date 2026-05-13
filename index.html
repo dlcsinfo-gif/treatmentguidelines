@@ -624,7 +624,7 @@ RULES:
     };
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -649,8 +649,7 @@ RULES:
     let errMsg = err.message || 'Unknown error';
     if (errMsg.includes('API_KEY_INVALID') || errMsg.includes('API key')) {
       errMsg = 'Invalid API key. Please check your Gemini API key and try again.';
-      localStorage.removeItem('gemini_api_key');
-      document.getElementById('setup-banner').style.display = '';
+
     }
     appendBotMessage(`<span style="color:#C0392B">⚠ Error: ${escapeHtml(errMsg)}</span>`, false);
   }
