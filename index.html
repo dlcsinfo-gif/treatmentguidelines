@@ -449,15 +449,6 @@
         <p>Ask any clinical question about HIV treatment, ART protocols, co-infections, or care guidelines. All answers are sourced directly from the official NACO Treatment & Care Guidelines PDF.</p>
       </div>
 
-      <!-- API Key Setup (shown until key is saved) -->
-      <div class="setup-banner" id="setup-banner">
-        <h3>🔑 Enter your Gemini API key to activate</h3>
-        <p>Get a free API key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> — no credit card required. Your key is stored only in your browser.</p>
-        <div class="key-row">
-          <input class="key-input" id="api-key-input" type="password" placeholder="AIzaSy..."/>
-          <button class="key-save-btn" onclick="saveKey()">Activate</button>
-        </div>
-      </div>
     </div>
 
     <div class="input-bar">
@@ -478,23 +469,11 @@ const PDF_URL = 'https://treatandcareguide.naco.gov.in//admin/pdf/guidelines.pdf
 const GEMINI_MODEL = 'gemini-1.5-flash';
 let conversationHistory = [];
 
-// --- API Key ---
-function getKey() { return localStorage.getItem('gemini_api_key') || ''; }
 
-function saveKey() {
-  const k = document.getElementById('api-key-input').value.trim();
-  if (!k.startsWith('AIza')) { alert('Please enter a valid Gemini API key (starts with AIza…)'); return; }
-  localStorage.setItem('AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4', k);
-  document.getElementById('setup-banner').style.display = 'none';
-  appendBotMessage("✅ API key saved! I'm ready to answer questions from the NACO Treatment & Care Guidelines. What would you like to know?", false);
-}
 
 // Hide banner if key already saved
 window.addEventListener('DOMContentLoaded', () => {
-  if (getKey()) {
-    document.getElementById('setup-banner').style.display = 'none';
-    appendBotMessage("👋 Welcome back! Ask me anything about the NACO HIV Treatment & Care Guidelines.", false);
-  }
+  appendBotMessage("👋 Welcome! Ask me anything about the NACO HIV Treatment & Care Guidelines.", false);
   document.getElementById('user-input').focus();
 });
 
