@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NACO Treatment Guidelines — AI Assistant</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --red: #C0392B;
+    --red-dark: #96281B;
+    --red-light: #FADBD8;
+    --navy: #1A2744;
+    --navy-mid: #243458;
+    --navy-light: #2E4070;
+    --cream: #FDFCF8;
+    --cream-dark: #F5F2EA;
+    --text: #1C1C1E;
+    --text-mid: #3D3D3F;
+    --text-muted: #6B6B6E;
+    --border: rgba(26,39,68,0.12);
+    --shadow: 0 2px 16px rgba(26,39,68,0.10);
+    --radius: 14px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -310,8 +329,6 @@
   #send-btn:disabled { background: var(--border); cursor: not-allowed; }
   #send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
-
-
   /* Mobile */
   @media (max-width: 640px) {
     .sidebar { display: none; }
@@ -392,7 +409,6 @@
         <h1>NACO Guidelines Assistant</h1>
         <p>Ask any clinical question about HIV treatment, ART protocols, co-infections, or care guidelines. All answers are sourced directly from the official NACO Treatment & Care Guidelines PDF.</p>
       </div>
-
     </div>
 
     <div class="input-bar">
@@ -411,15 +427,11 @@
 <script>
 const PDF_URL = 'https://treatandcareguide.naco.gov.in//admin/pdf/guidelines.pdf';
 const GEMINI_MODEL = 'gemini-1.5-flash';
+
+// ✅ HARDCODED API KEY — replace with your real key
+const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+
 let conversationHistory = [];
-
-
-
-// Hide banner if key already saved
-window.addEventListener('DOMContentLoaded', () => {
-  appendBotMessage("👋 Welcome! Ask me anything about the NACO HIV Treatment & Care Guidelines.", false);
-  document.getElementById('user-input').focus();
-});
 
 // --- UI helpers ---
 function autoResize(el) {
@@ -492,7 +504,6 @@ function escapeHtml(s) {
 }
 
 function formatResponse(text) {
-  // Convert markdown-ish to HTML
   let h = text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
@@ -505,17 +516,17 @@ function formatResponse(text) {
   return h;
 }
 
+// Show welcome message on load
+window.addEventListener('DOMContentLoaded', () => {
+  appendBotMessage("👋 Welcome! Ask me anything about the NACO HIV Treatment & Care Guidelines.", false);
+  document.getElementById('user-input').focus();
+});
+
 // --- Main send ---
 async function sendMessage() {
   const input = document.getElementById('user-input');
   const question = input.value.trim();
   if (!question) return;
-
-  const key = getKey();
-  if (!key) {
-    alert('Please enter and save your Gemini API key first.');
-    return;
-  }
 
   input.value = '';
   input.style.height = 'auto';
@@ -568,7 +579,7 @@ RULES:
     };
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4',
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -578,9 +589,7 @@ RULES:
 
     const data = await res.json();
 
-    if (data.error) {
-      throw new Error(data.error.message);
-    }
+    if (data.error) throw new Error(data.error.message);
 
     const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received.';
     conversationHistory.push({ role: 'model', parts: [{ text: answer }] });
@@ -591,10 +600,6 @@ RULES:
   } catch (err) {
     removeTyping();
     let errMsg = err.message || 'Unknown error';
-    if (errMsg.includes('API_KEY_INVALID') || errMsg.includes('API key')) {
-      errMsg = 'Invalid API key. Please check your Gemini API key and try again.';
-
-    }
     appendBotMessage(`<span style="color:#C0392B">⚠ Error: ${escapeHtml(errMsg)}</span>`, false);
   }
 
