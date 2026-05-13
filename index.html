@@ -5,25 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NACO Treatment Guidelines — AI Assistant</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --red: #C0392B;
-    --red-dark: #96281B;
-    --red-light: #FADBD8;
-    --navy: #1A2744;
-    --navy-mid: #243458;
-    --navy-light: #2E4070;
-    --cream: #FDFCF8;
-    --cream-dark: #F5F2EA;
-    --text: #1C1C1E;
-    --text-mid: #3D3D3F;
-    --text-muted: #6B6B6E;
-    --border: rgba(26,39,68,0.12);
-    --shadow: 0 2px 16px rgba(26,39,68,0.10);
-    --radius: 14px;
-    --font: 'DM Sans', sans-serif;
-    --mono: 'DM Mono', monospace;
-  }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -329,44 +310,7 @@
   #send-btn:disabled { background: var(--border); cursor: not-allowed; }
   #send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
-  /* API key setup */
-  .setup-banner {
-    background: #fff;
-    border: 1.5px solid var(--red-light);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 0 0 16px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .setup-banner h3 { font-size: 14px; font-weight: 600; color: var(--red-dark); }
-  .setup-banner p { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
-  .setup-banner a { color: var(--navy); }
-  .key-row { display: flex; gap: 8px; }
-  .key-input {
-    flex: 1;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-family: var(--mono);
-    font-size: 13px;
-    outline: none;
-    color: var(--text);
-    transition: border-color 0.2s;
-  }
-  .key-input:focus { border-color: var(--navy); }
-  .key-save-btn {
-    padding: 8px 16px;
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .key-save-btn:hover { background: var(--navy-light); }
+
 
   /* Mobile */
   @media (max-width: 640px) {
