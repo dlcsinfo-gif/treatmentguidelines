@@ -36,7 +36,6 @@
     flex-direction: column;
   }
 
-  /* HEADER */
   header {
     background: var(--navy);
     color: #fff;
@@ -73,7 +72,6 @@
     letter-spacing: 0.3px;
   }
 
-  /* LAYOUT */
   .layout {
     display: flex;
     flex: 1;
@@ -81,7 +79,6 @@
     height: calc(100vh - 64px);
   }
 
-  /* SIDEBAR */
   .sidebar {
     width: 280px;
     flex-shrink: 0;
@@ -156,7 +153,6 @@
     border-top: 1px solid rgba(255,255,255,0.07);
   }
 
-  /* CHAT AREA */
   .chat-area {
     flex: 1;
     display: flex;
@@ -177,7 +173,6 @@
   .messages::-webkit-scrollbar-track { background: transparent; }
   .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  /* Welcome */
   .welcome {
     max-width: 560px;
     margin: 0 auto;
@@ -196,7 +191,6 @@
   .welcome h1 { font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 8px; letter-spacing: -0.4px; }
   .welcome p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-  /* Messages */
   .msg {
     display: flex;
     gap: 12px;
@@ -243,7 +237,6 @@
   .msg.bot .msg-bubble li { margin-bottom: 4px; }
   .msg.bot .msg-bubble p + p { margin-top: 8px; }
 
-  /* Source tag */
   .source-tag {
     display: inline-flex; align-items: center; gap: 5px;
     background: var(--cream-dark);
@@ -257,7 +250,6 @@
   }
   .source-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
 
-  /* Typing indicator */
   .typing-bubble {
     background: #fff;
     border: 1px solid var(--border);
@@ -280,7 +272,6 @@
     30% { transform: translateY(-5px); opacity: 1; }
   }
 
-  /* Input bar */
   .input-bar {
     padding: 16px 24px 20px;
     background: var(--cream);
@@ -329,7 +320,6 @@
   #send-btn:disabled { background: var(--border); cursor: not-allowed; }
   #send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
-  /* Mobile */
   @media (max-width: 640px) {
     .sidebar { display: none; }
     .messages { padding: 16px; }
@@ -349,7 +339,6 @@
 </header>
 
 <div class="layout">
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Loaded Document</div>
@@ -401,7 +390,6 @@
     </div>
   </aside>
 
-  <!-- Chat -->
   <div class="chat-area">
     <div class="messages" id="messages">
       <div class="welcome">
@@ -426,14 +414,13 @@
 
 <script>
 const PDF_URL = 'https://treatandcareguide.naco.gov.in//admin/pdf/guidelines.pdf';
-const GEMINI_MODEL = 'gemini-1.5-flash';
 
-// ✅ HARDCODED API KEY — replace with your real key
+// ✅ FIXED: Updated to current working model
+const GEMINI_MODEL = 'gemini-2.0-flash';
 const GEMINI_API_KEY = 'AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4';
 
 let conversationHistory = [];
 
-// --- UI helpers ---
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
@@ -516,13 +503,11 @@ function formatResponse(text) {
   return h;
 }
 
-// Show welcome message on load
 window.addEventListener('DOMContentLoaded', () => {
   appendBotMessage("👋 Welcome! Ask me anything about the NACO HIV Treatment & Care Guidelines.", false);
   document.getElementById('user-input').focus();
 });
 
-// --- Main send ---
 async function sendMessage() {
   const input = document.getElementById('user-input');
   const question = input.value.trim();
@@ -579,7 +564,7 @@ RULES:
     };
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
