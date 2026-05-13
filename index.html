@@ -526,7 +526,7 @@ async function sendMessage() {
     const systemInstruction = `You are a clinical AI assistant for healthcare professionals in India, trained on the NACO (National AIDS Control Organisation) HIV Treatment & Care Guidelines PDF.
 
 RULES:
-1. Answer ONLY based on the guidelines PDF provided. Do not use outside knowledge.
+1. Answer ONLY based on the NACO guidelines. Do not use outside knowledge.
 2. Be precise and clinically accurate. Use proper medical terminology.
 3. If the answer is not in the guidelines, say: "This specific information is not covered in the current NACO guidelines. Please consult the complete document or a clinical specialist."
 4. Structure answers clearly with headings and bullet points where appropriate.
@@ -536,25 +536,13 @@ RULES:
     const requestBody = {
       system_instruction: { parts: [{ text: systemInstruction }] },
       contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              file_data: {
-                mime_type: 'application/pdf',
-                file_uri: PDF_URL
-              }
-            },
-            { text: `Based on the NACO guidelines PDF above, please answer: ${question}` }
-          ]
-        },
         ...conversationHistory.slice(0, -1).map(h => ({
           role: h.role,
           parts: [{ text: h.parts[0].text }]
         })),
         {
           role: 'user',
-          parts: [{ text: question }]
+          parts: [{ text: `Based on the NACO HIV Treatment & Care Guidelines (https://treatandcareguide.naco.gov.in/admin/pdf/guidelines.pdf), please answer: ${question}` }]
         }
       ],
       generationConfig: {
@@ -564,7 +552,7 @@ RULES:
     };
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${AIzaSyAWbIMcH_iot65DinNVuOXSvsTDFueFxj4}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -573,7 +561,6 @@ RULES:
     );
 
     const data = await res.json();
-
     if (data.error) throw new Error(data.error.message);
 
     const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received.';
@@ -584,12 +571,12 @@ RULES:
 
   } catch (err) {
     removeTyping();
-    let errMsg = err.message || 'Unknown error';
-    appendBotMessage(`<span style="color:#C0392B">⚠ Error: ${escapeHtml(errMsg)}</span>`, false);
+    appendBotMessage(`<span style="color:#C0392B">⚠ Error: ${escapeHtml(err.message || 'Unknown error')}</span>`, false);
   }
 
   document.getElementById('send-btn').disabled = false;
   document.getElementById('user-input').focus();
+}
 }
 </script>
 </body>
